@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import api from "../lib/api"; 
 
 export default function LoginForm({ onLogin }) {
   const [form, setForm] = useState({ username: "", password: "", shop_db: "" });
@@ -9,8 +10,8 @@ export default function LoginForm({ onLogin }) {
     e.preventDefault();
     setError("");
     try {
-      const res = await window.axios.post(
-        "http://localhost:3000/api/auth/login",
+      const res = await api.post(
+        "auth/login",
         {
           username: form.username,
           password: form.password,
