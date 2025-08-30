@@ -1,0 +1,12 @@
+src/components/FeatureCards.jsx
+src/components/News.jsx
+src/components/ServiceSection.jsx
+src/components/VisionMission.jsx
+src/components/WelcomeSection.jsx
+src/components/Navbar.jsx
+src/components/Footer.jsx
+src/pages/Publications/
+src/pages/NewsDetail.jsx
+src/pages/Home.jsx
+src/pages/Contact.jsx
+src/components/contact/
