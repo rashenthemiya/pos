@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import api from "../lib/api";
 
 export default function RegisterForm({ token, shop_db }) {
   const [form, setForm] = useState({
@@ -18,8 +19,8 @@ export default function RegisterForm({ token, shop_db }) {
     setError("");
     setSuccess("");
     try {
-      const res = await window.axios.post(
-        "http://localhost:3000/api/auth/register",
+      const res = await api.post(
+        "auth/register",
         form,
         {
           headers: {
