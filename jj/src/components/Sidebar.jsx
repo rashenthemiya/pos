@@ -14,7 +14,7 @@ import {
     FaWarehouse
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "./../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import ConfirmWrapper from "./ConfirmWrapper";
 
 
@@ -22,7 +22,13 @@ import ConfirmWrapper from "./ConfirmWrapper";
 const getMenuItems = (role) => [
     { path: "/admin-dashboard", icon: <FaHome />, label: "Dashboard" },
     { path: "/product-management", icon: <FaBox />, label: "Products" },
-    { path: "/customers", icon: <FaUserFriends />, label: "Customers" },
+    { path: "/sale", icon: <FaMoneyBill />, label: "Sale / Billing" },
+            {
+                icon: <FaUserFriends />,
+                label: "Customers",
+                path: "/customer-management"
+            },
+    // You can add more customer management links here
     { path: "/orders", icon: <FaClipboardList />, label: "Orders" },
     { path: "/payments", icon: <FaMoneyBill />, label: "Payments" },
     { path: "/withdrawals", icon: <FaHandHoldingUsd />, label: "Withdrawals" },
@@ -59,12 +65,30 @@ const Sidebar = () => {
                 </button>
                 <ul className="mt-4 space-y-2 flex-grow">
                     {menuItems.map((item) => (
-                        <li key={item.path}>
-                            <Link to={item.path} className="flex items-center p-2 hover:bg-gray-700 transition rounded-lg">
-                                <span className="text-xl ml-4 mr-4">{item.icon}</span>
-                                <span className={`transition-all duration-300 ${isExpanded ? "opacity-100" : "opacity-0 hidden"}`}>{item.label}</span>
-                            </Link>
-                        </li>
+                        item.subMenu ? (
+                            <li key={item.label} className="group">
+                                <Link to={item.path} className="flex items-center p-2 hover:bg-gray-700 transition rounded-lg cursor-pointer">
+                                    <span className="text-xl ml-4 mr-4">{item.icon}</span>
+                                    <span className={`transition-all duration-300 ${isExpanded ? "opacity-100" : "opacity-0 hidden"}`}>{item.label}</span>
+                                </Link>
+                                <ul className={`ml-8 mt-2 space-y-1 ${isExpanded ? "block" : "hidden"}`}>
+                                    {item.subMenu.map(sub => (
+                                        <li key={sub.path}>
+                                            <Link to={sub.path} className="flex items-center p-2 hover:bg-gray-700 transition rounded-lg">
+                                                <span className={`transition-all duration-300 ${isExpanded ? "opacity-100" : "opacity-0 hidden"}`}>{sub.label}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </li>
+                        ) : (
+                            <li key={item.path}>
+                                <Link to={item.path} className="flex items-center p-2 hover:bg-gray-700 transition rounded-lg">
+                                    <span className="text-xl ml-4 mr-4">{item.icon}</span>
+                                    <span className={`transition-all duration-300 ${isExpanded ? "opacity-100" : "opacity-0 hidden"}`}>{item.label}</span>
+                                </Link>
+                            </li>
+                        )
                     ))}
                 </ul>
                 {/* Logout Button */}

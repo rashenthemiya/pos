@@ -6,6 +6,15 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   base: './', // ✅ makes asset paths relative (fix for S3 or static hosting)
   plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   build: {
     rollupOptions: {
       output: {

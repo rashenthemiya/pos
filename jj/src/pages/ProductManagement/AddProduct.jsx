@@ -38,10 +38,12 @@ const AddProduct = () => {
         if (image) formData.append("image", image);
 
         try {
-            await api.post("/api/items", formData, {
+            const shopDb = localStorage.getItem("shop_db");
+            await api.post("/items", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                },
+                    "x-shop-db": shopDb,
+                }
             });
             setShowSuccess(true);
             setProduct({ sku: "", name: "", unit: "", category: "", brand: "" });

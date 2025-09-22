@@ -1,4 +1,4 @@
-const { Customer } = require("../models/Customer");
+const { Customer } = require("../models");
 
 // ✅ Create a new customer
 exports.createCustomer = async (req, res) => {
@@ -22,7 +22,7 @@ exports.createCustomer = async (req, res) => {
       : null;
 
     // Create customer
-    const customer = await Customer.create({
+    const customer = await req.shopDb.models.Customer.create({
       name,
       nic,
       nic_image_front,
@@ -46,7 +46,7 @@ exports.createCustomer = async (req, res) => {
 // ✅ Get all customers
 exports.getAllCustomers = async (req, res) => {
   try {
-    const customers = await Customer.findAll({
+    const customers = await req.shopDb.models.Customer.findAll({
       attributes: { exclude: ["nic_image_front", "nic_image_back"] } // avoid large BLOBs
     });
 
@@ -61,7 +61,7 @@ exports.getAllCustomers = async (req, res) => {
 exports.getCustomerById = async (req, res) => {
   try {
     const { id } = req.params;
-    const customer = await Customer.findByPk(id);
+  const customer = await req.shopDb.models.Customer.findByPk(id);
 
     if (!customer) {
       return res.status(404).json({ message: "Customer not found" });
@@ -79,7 +79,7 @@ exports.updateCustomer = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const customer = await Customer.findByPk(id);
+  const customer = await req.shopDb.models.Customer.findByPk(id);
     if (!customer) {
       return res.status(404).json({ message: "Customer not found" });
     }

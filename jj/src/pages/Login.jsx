@@ -14,7 +14,7 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
       const res = await axios.post(
         `${apiUrl}/auth/login`,
         {
@@ -30,8 +30,9 @@ export default function Login() {
         }
       );
       // Save token and user info as needed
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("user", JSON.stringify(res.data.user));
+  localStorage.setItem("shop_db", form.shop_db);
       navigate("/admin-dashboard");
     } catch (err) {
       console.error("Login failed. Error object:", err);

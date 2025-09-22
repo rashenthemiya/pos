@@ -1,9 +1,9 @@
 import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -25,7 +25,10 @@ const ViewProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get("/api/items");
+        const shopDb = localStorage.getItem("shop_db");
+        const response = await api.get("/items", {
+          headers: { "x-shop-db": shopDb }
+        });
         setProducts(response.data);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch items.");
@@ -38,7 +41,10 @@ const ViewProducts = () => {
 
   const handleDeleteProduct = async (itemId) => {
     try {
-      await api.delete(`/api/items/${itemId}`);
+      const shopDb = localStorage.getItem("shop_db");
+      await api.delete(`/items/${itemId}`, {
+        headers: { "x-shop-db": shopDb }
+      });
       setProducts((prev) => prev.filter((item) => item.id !== itemId));
       toast.success("Item deleted successfully!");
     } catch (err) {
@@ -48,11 +54,11 @@ const ViewProducts = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "id",
+        accessorKey: "item_id",
         header: "Item ID",
         cell: (info) => (
           <button
-            onClick={() => navigate(`/product-summary/${info.row.original.id}`)}
+            onClick={() => navigate(`/product-summary/${info.row.original.item_id}`)}
             className="text-blue-600 underline hover:text-blue-800 text-sm"
           >
             {highlight(info.getValue(), globalFilter)}
@@ -110,14 +116,14 @@ const ViewProducts = () => {
           return (
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => navigate(`/edit-product/${item.id}`)}
+                onClick={() => navigate(`/edit-product/${item.item_id}`)}
                 className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm"
               >
                 Edit
               </button>
               <ConfirmWrapper
-                message={`Are you sure you want to delete item \"${item.name}\" with ID \"${item.id}\"?`}
-                onConfirm={() => handleDeleteProduct(item.id)}
+                message={`Are you sure you want to delete item \"${item.name}\" with ID \"${item.item_id}\"?`}
+                onConfirm={() => handleDeleteProduct(item.item_id)}
               >
                 <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm">
                   Delete

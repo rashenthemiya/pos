@@ -1,7 +1,34 @@
 const { Op } = require('sequelize');
-
 // All item operations use req.shopDb for multi-tenant
 module.exports = {
+  // GET /api/items/search?q=milk
+  async search(req, res, next) {
+    try {
+      const q = req.query.q ? req.query.q.trim() : '';
+      let items;
+      if (!q) {
+        // If query is empty, return all items
+        items = await req.shopDb.models.Item.findAll();
+      } else {
+        // Case-insensitive search for name and sku using Sequelize.literal
+        const orArr = [
+          req.shopDb.Sequelize.literal(`LOWER(name) LIKE '%${q.toLowerCase()}%'`),
+          req.shopDb.Sequelize.literal(`LOWER(sku) LIKE '%${q.toLowerCase()}%'`)
+        ];
+        if (!isNaN(Number(q))) {
+          orArr.push({ item_id: Number(q) });
+        }
+        items = await req.shopDb.models.Item.findAll({
+          where: {
+            [Op.or]: orArr
+          }
+        });
+      }
+      res.json(items);
+    } catch (err) {
+      next(err);
+    }
+  },
   // GET /api/items
   async getAll(req, res, next) {
     try {

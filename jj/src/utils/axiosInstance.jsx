@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: import.meta.env.REACT_APP_API_URL, // Use the correct .env variable
+    baseURL: import.meta.env.VITE_API_URL, // Use the correct .env variable for Vite
     headers: {
         "Content-Type": "application/json",
     },
