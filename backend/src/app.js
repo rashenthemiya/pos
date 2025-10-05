@@ -17,7 +17,6 @@ app.use(express.json());
 app.use(shopDbMiddleware);
 app.use('/api', routes);
 app.use(errorHandler);
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
